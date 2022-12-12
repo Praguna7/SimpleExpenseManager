@@ -72,16 +72,12 @@ public class persistentTransactionDAO extends SQLiteOpenHelper implements Transa
         double currentBal = cursor.getDouble(0);
         if(expenseType==ExpenseType.EXPENSE && currentBal<amount){
             throw new InsufficientAmountException();
+            //When account balance is not sufficient to do the transaction
         }
 
         //convert date object to a String
         @SuppressLint("SimpleDateFormat") DateFormat df =new SimpleDateFormat(dateFormat);
-//        ContentValues cv = new ContentValues();
-//        cv.put(DATE_COL,df.format(date));
-//        cv.put(ACCOUNT_NO_COL,accountNo);
-//        cv.put(EXPENSE_TYPE_COL,expenseType.name());
-//        cv.put(AMOUNT_COL,amount);
-//        db.insert(transactionTable,null,cv);
+
         String dt =df.format(date);
         String query = "INSERT INTO "+transactionTable+" (" +
                 DATE_COL+","+
@@ -99,6 +95,7 @@ public class persistentTransactionDAO extends SQLiteOpenHelper implements Transa
 
     @SuppressLint("SimpleDateFormat")
     @Override
+    //get transactions in DESC order by time
     public List<Transaction> getAllTransactionLogs() {
         SQLiteDatabase db =this.getReadableDatabase();
         String query = "SELECT * FROM "+transactionTable + " ORDER BY "+TRANSACTION_ID+" DESC;";
@@ -125,6 +122,7 @@ public class persistentTransactionDAO extends SQLiteOpenHelper implements Transa
 
     @SuppressLint("SimpleDateFormat")
     @Override
+    //get "limit" number of transactions in DESC order by time
     public List<Transaction> getPaginatedTransactionLogs(int limit) {
         SQLiteDatabase db =this.getReadableDatabase();
         String query = "SELECT * FROM "+transactionTable + " ORDER BY "+TRANSACTION_ID+" DESC LIMIT " + limit + ";";
@@ -146,25 +144,6 @@ public class persistentTransactionDAO extends SQLiteOpenHelper implements Transa
                 transactionsList.add(tempTransaction);
         }
 
-//        if(cursor.moveToFirst() && limit!=0){
-//            int i=0;
-//            do {
-//                Transaction tempTransaction = null;
-//                try {
-//                    tempTransaction = new Transaction(
-//                            new SimpleDateFormat(dateFormat).parse(cursor.getString(0)),
-//                            cursor.getString(1),
-//                            (Objects.equals(cursor.getString(2), "1") ? ExpenseType.EXPENSE: ExpenseType.INCOME),
-//                            cursor.getDouble(3)
-//                    );
-//                } catch (ParseException e) {
-//                    e.printStackTrace();
-//                }
-//                transactionsList.add(tempTransaction);
-//                i+=1;
-//            }
-//            while (cursor.moveToFirst() || i==limit);
-//        }
         cursor.close();
         return transactionsList;
     }

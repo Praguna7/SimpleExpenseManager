@@ -92,9 +92,7 @@ public class persistentAccountDAO extends SQLiteOpenHelper implements AccountDAO
     @Override
     public void addAccount(Account account) {
         SQLiteDatabase db =this.getWritableDatabase();
-//        String query = "INSERT INTO accounts (" + ACCOUNT_NUM_COL+","+BANK_NAME_COL+","+ACC_HOLDER_NAME_COL + "," + BAL_COL +") " +
-//                "VALUES (vtbdgr,gteygte,19,4000)";
-//        db.execSQL(query);
+
         String query = "INSERT INTO accounts(balance,accountNum,bankName,accHolderName) VALUES(" +
                 "'"+account.getBalance()+ "'," +
                 "'"+account.getAccountNo()+"'," +
@@ -102,13 +100,7 @@ public class persistentAccountDAO extends SQLiteOpenHelper implements AccountDAO
                 "'"+account.getAccountHolderName()+"'" +
                 ")";
         db.execSQL(query);
-//        ContentValues cv=new ContentValues();
-//        cv.put(ACCOUNT_NUM_COL,account.getAccountNo());
-//        cv.put(BANK_NAME_COL,account.getBankName());
-//        cv.put(ACC_HOLDER_NAME_COL,account.getAccountHolderName());
-//        cv.put(BAL_COL ,account.getBalance());
-//
-//        db.insert(accTable,null,cv);
+
     }
 
     @Override
