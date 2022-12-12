@@ -33,6 +33,7 @@ import android.widget.Spinner;
 
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.R;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.ExpenseManager;
+import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.exception.InsufficientAmountException;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.exception.InvalidAccountException;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.model.ExpenseType;
 
@@ -116,6 +117,18 @@ public class ManageExpensesFragment extends Fragment implements View.OnClickList
                                         dialog.cancel();
                                     }
                                 }).setIcon(android.R.drawable.ic_dialog_alert).show();
+                    }
+                    catch (InsufficientAmountException ee){
+                        new AlertDialog.Builder(this.getActivity())
+                                .setTitle("Low Balance")
+                                .setMessage("Your Account balance is not sufficient to do this transaction!")
+                                .setNeutralButton("OK",
+                                        new DialogInterface.OnClickListener(){
+                                    @Override
+                                            public void onClick(DialogInterface dialog,int which){
+                                        dialog.cancel();
+                                    }
+                                        }).setIcon(android.R.drawable.ic_dialog_alert).show();
                     }
                 }
                 amount.getText().clear();
